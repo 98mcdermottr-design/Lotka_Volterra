@@ -8,11 +8,13 @@ Lotka-Volterra equations applied in Python
 ---
 
 #2_Lotka_Volterra_Steady_State.py
+
 Inclusion of the steady state
 
 ---
 
 #3_Lotka_Volterra_Carrying_Capacity.py
+
 Introduction of the carrying capacity
 
 ---

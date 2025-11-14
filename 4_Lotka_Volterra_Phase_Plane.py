@@ -84,7 +84,7 @@ plt.show()
 x_vals = np.linspace(0, 2 * y[:,0].max(), 400)
 y_vals = np.linspace(0, 2 * y[:,1].max(), 400)
 X, Y = np.meshgrid(x_vals, y_vals)
-# creates grid for phaseplane
+# creates grid for phaseplane. Big 2D matrix with a bunch of possible values for prey and predator populations
 
 DX = (alpha * X * (1 - (X / K))) - (beta * X * Y)
 DY = (-gamma * Y) + (delta * X * Y)

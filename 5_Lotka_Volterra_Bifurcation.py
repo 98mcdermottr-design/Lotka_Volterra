@@ -115,8 +115,11 @@ def bifurcation_plot():
     plt.show()
 
 if update == "PREY BIRTH":
+# if function in place dependent on which paramter you've decided to perform bifurcation analysis on
     alpha_vals = np.linspace(alpha/2, alpha*1.5, 3)
+    # generates possible alpha values to show in bifurcation analysis
     for alpha in alpha_vals:
+    # then run the regular steps for each of these possible alpha values
         params = [alpha, beta, delta, gamma, K]
         y = odeint(sim, variables, t, args = (params, ))
         variables_SS = SS(alpha, beta, delta, gamma, K)

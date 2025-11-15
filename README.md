@@ -72,11 +72,29 @@ How the carrying capacity works, is that once the prey population gets close to 
 
 # 4_Lotka_Volterra_Phase_Plane.py
 
-The phase plane just merges the Lotka-Volterra equations, and instead of showing how each population changes with respect to time, you show how the prey population changes with respect to the predator population.
+The phase plane just merges the Lotka-Volterra equations, and instead of showing how each population changes with respect to time, you show how the predator population changes with respect to the prey population.
+
+The rate of change of the predator population with respect to the prey population can be represented using the below formula (found simply using the chain rule):
+
+<img width="173" height="68" alt="image" src="https://github.com/user-attachments/assets/99bb4f0c-e7a4-4438-8d62-03bb977e8a2d" />
+
+So to plot the phase plane, you first make up a large grid of possible population values for x and y. From there you calculate the change in x and y at each of those possible values of x and y, and then you plot all of these possible movements in x and y using the streamplot function:
+
+<img width="757" height="555" alt="image" src="https://github.com/user-attachments/assets/c99c16a3-29b6-4d81-b8b5-c35bac6e790b" />
+
+The arrows represent the direction that the predator and prey populations go in respect to where they are right now.
+
+The above also shows the actual trajectory of the predator and prey populations based on our actual starting populations (blue line), as well as the steady state from this model (red dot).
 
 ---
 
-# 5_Lotka_Volterra_Parameter_Estimation.py
+# 5_Lotka_Volterra_Bifurcation.py
+
+The bifurcation script adds an additional element on the end, to show how the model would change as a result of change in the parameters; alpha, beta, gamma or delta.
+
+It simply takes the input of which parameter you're looking to show variations of, and then scales it up 1.5 times, and scales it down 0.5 times. After this it runs the normal steps of odeint and then plot the results, but it shows 3 seperate models for each possible version of the parameter that's been chosen to perform bifurcation analysis for. Below is an example of the output plot from this analysis:
+
+<img width="1619" height="888" alt="image" src="https://github.com/user-attachments/assets/c6d9c486-178e-495b-b780-3a42743d9c64" />
 
 ---
 

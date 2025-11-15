@@ -1,5 +1,5 @@
-# Lotka_Volterra
-Series of Lotka-Volterra models applied in Python, with each model having an additional extension.
+# Lotka Volterra Equations Applied
+This project implements a series of increasingly complex models focused around applying the Lotka-Volterra equations in Python. Each extension is motivated by biological realism or mathematical curiosity. From this basis, these Lotka-Volterra models can be extended even further and applied across ecology, economics, city planning and more.
 
 ---
 
@@ -98,7 +98,51 @@ It simply takes the input of which parameter you're looking to show variations o
 
 ---
 
-# 6_Lotka_Volterra_Phase_Plane_Nullclines.py
+# 6_Lotka_Volterra_Parameter_Estimation.py
+
+In each of the above models, the parameters and the starting populations were inputted by the user, but if we had a data set with predator and prey populations over a stretch of time, we could solve for the model parameters using this data set.
+
+This is what is done in the latest iteration of the Lotka-Volterra model. The user inputs are removed, and instead we rely on an excel sheet, which we import into the python script, called "Input Data.xlsx".
+
+So once we import the excel sheet using pd.read_excel, we must then transform this pandas dataframe, into arrays, one for the length of time, one for the prey population and one for the predator population.
+
+Once we have done this, we setup an initial guesses for the parameters (don't worry these will be changed later in the script), and we set x0 and y0 equal to the starting populations from the "Input Data.xlsx" file.
+
+Then there is the usual step of defining our Lotka-Volterra equations, but then we define a residuals function, which essentially runs the odeint, and then finds the difference between the output of the odeint and our actual predator and prey populations from the "Input Data.xlsx".
+
+Using a combination of our residuals function and out initial estimate of the parameters, the least-squares function then performs an optimsiation loop, that keeps trying different parameters until it's landed on the set of paramters that minimise the sum of squared residuals. Once it has found these set of parameters, we set these equal to alpha, beta, delta, gamma and K, and we run the remaining steps as usual.
+
+---
+
+# 7_Lotka_Volterra_Multiple_Animals.py
+
+The Lotka-Volterra can also be upgraded to include multiple animals. The addition of multiple animals is quite simple in theory, but it introduces many complexities in Python.
+
+For simplicities sake, this new iteration of the Lotka-Volterra model has the parameter estimation, bifurcation, phase plane, and steady state removed. It also relies on the assumption that each predator can eat each prey.
+
+So with multiple animals the equations change, but just with the addition of the extra predator or prey. For example with two predators and one prey, the rate of change of the prey population is now represented by the below:
+
+<img width="215" height="72" alt="image" src="https://github.com/user-attachments/assets/14349aa4-674b-4ed1-aef4-f89fe68184da" />
+
+where
+- x is the prey population
+- y is the population of the first predator
+- z is the population of the second predator
+- a is the birth rate of the prey population
+- b is the predation rate of the first predator on the prey population
+- c is the predation rate of the second predator on the prey population
+
+But for this model we've assumed that the predation rate parameters are the same, so b = c, which means we can sum the predator populations when doing the calculation.
+
+In this model, you're allowed to have as many prey or predators as you like, so first we define empty lists for each of the parameters, then runs a loop to get the user input for each of the parameters. Once all of these parameters are added to their respective lists, it then converts the paramter lists into arrays.
+
+Once this is done, the lotka volterra equations need to be defined in a function. So first we redefine the parameters within the function, as usual, and set x and y equal to the starting populations for the prey and the predators. Then we create an array of 0s for dxdt (essentially an empty array for values to be added later), after this it is a matter of running a loop to calculate dxdt for each prey, so the formula for each is the birth rate for that prey times the starting population, which is all adjusted for with the carrying capacity, minus the prey population times the predation rate times the sum of the predator (remember it was noted above that we are not using specific predation rates for each predator, which means we can sum the predator population). We then apply this same approach of using a loop to calculate the rate of change of the predator population for each predator.
+
+Once this is all complete, we run the odeint. But notice in each of the previous steps we concatenated the starting populations, as well as the rates of change, this is because odeint requires a 1D array input for the starting populations and a 1D array output for the rates of change, as the integration requires vectors. Odeint will then return a t x a matrix, where t is the number of timesteps and a is the number of prey and predator species you are analysing combined, where the first n columns, where n is the number of prey, show the prey populations over time and the m columns after that, where m is the number of predators, show the predator populations over time.
+
+Then the results can be plotted:
+
+<img width="869" height="545" alt="image" src="https://github.com/user-attachments/assets/df27d79a-5694-451c-aa43-87a6c96f37fa" />
 
 ---
 # 🥈 Alternatives Of The Above
@@ -107,6 +151,11 @@ It simply takes the input of which parameter you're looking to show variations o
 ---
 
 # 📑 Sources
+_Youtube Videos and Wikipedia pages explaining the concepts behind the Lotka-Volterra Model_
 - https://www.youtube.com/watch?v=Tc05IbqTsFM
 - https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations
 - https://en.wikipedia.org/wiki/Competitive_Lotka%E2%80%93Volterra_equations
+
+_Useful papers on the application of the Lotka-Volterr model, as well as one applied to market share between Samsung and Apple (recommend this read if you want to see the Lotka-Volterra equations applied outside of ecology)_
+- https://mc-stan.org/learn-stan/case-studies/lotka-volterra-predator-prey.html?utm_source=chatgpt.com
+- https://www.siam.org/media/oqef0fuc/s163493r.pdf

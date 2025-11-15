@@ -33,19 +33,23 @@ def sim(variables, t, params):
     # Lotka-Volaterra equations
     return dxdt, dydt
 
-# Initialize arrays
 x_vals = np.zeros(len(t))
 y_vals = np.zeros(len(t))
 x_vals[0] = x0
 y_vals[0] = y0
+# setup arrays that will contain each of the population values
 
 dt = t[1] - t[0]  # time step size
 
-# Euler integration loop
 for i in range(1, len(t)):
     dxdt, dydt = sim([x_vals[i-1], y_vals[i-1]], t[i-1], params)
+    # finds dxdt at each time step
     x_vals[i] = x_vals[i-1] + dxdt * dt
+    # inputs into the essentially blank array made above, the population at each time step, by just taking the previous
+    # population value, then multiplying the change with respect to time by the change in time
+    # then just repeats the loop
     y_vals[i] = y_vals[i-1] + dydt * dt
+    # does the same as the above but for the predator population
 
 plt.figure(figsize = (10,6))
 plt.subplot(2, 1, 1)

@@ -51,6 +51,7 @@ y = odeint(sim, variables, t, args = (params, ))
 
 def SS(alpha, beta, delta, gamma, K):
     global y0_SS
+    # use global so that this variable is defined inside and outside of the function
     y0_SS = (alpha / beta) * (1 - (gamma / (delta * K)))
     # with the introduction of the carrying capacity, the steady state for the predator population changes
     global x0_SS

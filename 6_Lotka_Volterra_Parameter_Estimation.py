@@ -11,7 +11,7 @@ t = np.linspace(0, len(data["Time"]), len(data["Time"]))
 x_real = data["Prey Population"].values
 y_real = data["Predator Population"].values
 
-params = [1.0, 0.1, 0.1, 0.1, 100]
+initial_guess = [1.0, 0.1, 0.1, 0.1, 100]
 
 x0 = x_real[0]
 y0 = y_real[0]
@@ -38,12 +38,13 @@ def sim(variables, t, params):
     # Lotka-Volaterra equations
     return dxdt, dydt
 
-def parameters(params):
+def residuals(params):
     y = odeint(sim, variables, t, args = (params, ))
     residuals = np.concatenate([(y[:, 0] - x_real), (y[:, 1] - y_real)])
     return residuals
-initial_guess = [1.0, 0.1, 0.1, 0.1, 100]
-result = least_squares(parameters, initial_guess)
+    # setting up what the difference between our estimated population values would be from our parameter estimates and the actual values
+result = least_squares(residuals, initial_guess)
+# runs an optimsiation loop, that keeps trying different parameters until it's landed on the set of paramters that minimise the sum of squared residuals
 alpha, beta, delta, gamma, K = result.x
 params = [alpha, beta, delta, gamma, K]
 
@@ -54,6 +55,7 @@ y = odeint(sim, variables, t, args = (params, ))
 # you need to outline the parameters again for odeint to use, which is why they're included above
 def SS(alpha, beta, delta, gamma, K):
     global y0_SS
+    # use global so that this variable is defined inside and outside of the function
     y0_SS = (alpha / beta) * (1 - (gamma / (delta * K)))
     # with the introduction of the carrying capacity, the steady state for the predator population changes
     global x0_SS

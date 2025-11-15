@@ -36,7 +36,8 @@ while g == "YES":
 gamma = np.array(gamma)
 delta = np.array(delta)
 y0 = np.array(y0)
-# enter in your parameters for the Lotka_Volterra model
+# creates a blank list for each of the paramters, then runs a loop to get the user input for each of the parameters
+# once all of these parameters are added to the list, it then converts the paramter lists into arrays
 
 params = [alpha, beta, delta, gamma, K]
 variables = np.concatenate([x0, y0])
@@ -53,16 +54,14 @@ def sim(variables, t, params):
     global n_pred
     n_pred = len(gamma)
     x = variables[:n_prey]
+    # set your initial population sizes for each species
     y = variables[n_prey:]
     # define all of your variables again in the function
     dxdt = np.zeros(n_prey)
     for i in range(n_prey):
         dxdt[i] = alpha[i] * x[i] * (1 - x[i] / K[i]) - beta[i] * x[i] * np.sum(y)
-    # introduction of carrying capacity into the rate of change of the prey population (K)
-    # alpha is the birth rate and x is the prey population, so as x approaches the carrying capacity K
-    # then the growth of the prey population will slow, and if x reaches the carrying capacity K,
-    # whereby x = K, then the birth rate of the prey population will go to 0 as,
-    # alpha * x * (1 - (x / x)) = alpha * x * (1 - 1) = alpha * x * 0 = 0
+    # this is a loop that ca;culates the rate of change of the prey population for each prey inputted
+    # note we don't use a predation rate specific to each predator, just specific to each prey, so you can just sum the predator populations
     dydt = np.zeros(n_pred)
     for j in range(n_pred):
         dydt[j] = -gamma[j] * y[j] + delta[j] * y[j] * np.sum(x)
@@ -75,6 +74,7 @@ y = odeint(sim, variables, t, args = (params, ))
 # the output is a txa matrix, where t is each time step and a is the number of animals that you are analysing
 # you need to outline the parameters again for odeint to use, which is why they're included above
 # run odeint with the steady state populations
+# note odeint requires a 1D array input for the starting populations and a 1D array output for the rates of change, for the integration
 
 plt.figure(figsize = (10,6))
 plt.subplot(2, 1, 1)

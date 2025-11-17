@@ -157,5 +157,5 @@ _Youtube Videos and Wikipedia pages explaining the concepts behind the Lotka-Vol
 - https://en.wikipedia.org/wiki/Competitive_Lotka%E2%80%93Volterra_equations
 
 _Useful papers on the application of the Lotka-Volterr model, as well as one applied to market share between Samsung and Apple (recommend this read if you want to see the Lotka-Volterra equations applied outside of ecology)_
-- https://mc-stan.org/learn-stan/case-studies/lotka-volterra-predator-prey.html?utm_source=chatgpt.com
+- https://mc-stan.org/learn-stan/case-studies/lotka-volterra-predator-prey.html
 - https://www.siam.org/media/oqef0fuc/s163493r.pdf
